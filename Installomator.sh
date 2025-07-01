@@ -349,7 +349,7 @@ if [[ $(/usr/bin/arch) == "arm64" ]]; then
     fi
 fi
 VERSION="10.9beta"
-VERSIONDATE="2025-06-24"
+VERSIONDATE="2025-07-01"
 
 # MARK: Functions
 
@@ -4742,7 +4742,7 @@ githubdesktop)
     expectedTeamID="VEKTX9H2N7"
     ;;
 gitkraken)
-    name="gitkraken"
+    name="GitKraken"
     type="dmg"
     appNewVersion=$( curl -sfL https://www.gitkraken.com/download | grep -o 'Latest release: [0-9.]*' | grep -o '[0-9.]*' )
     if [[ $(arch) == "arm64" ]]; then
@@ -9514,6 +9514,14 @@ tableaureader)
     expectedTeamID="QJ4XPRK37C"
     ;;
 
+tableplus)
+    name="TablePlus"
+    type="dmg"
+    downloadURL="https://tableplus.com/release/osx/tableplus_latest"
+    appNewVersion=$(curl -fs https://tableplus.com/release/osx/tableplus_latest | grep -oE '[0-9]+/[^"]*TablePlus\.dmg' | grep -oE '^[0-9]+')
+    versionKey="CFBundleVersion"
+    expectedTeamID="3X57WP8E8V"
+    ;;
 tageditor)
      name="Tag Editor"
      type="dmg"

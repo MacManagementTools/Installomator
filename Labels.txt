@@ -876,6 +876,7 @@ sysexlibrarian
 tableaudesktop
 tableaupublic
 tableaureader
+tableplus
 tageditor
 tailscale
 talkdeskcxcloud
