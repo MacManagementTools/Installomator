@@ -349,7 +349,7 @@ if [[ $(/usr/bin/arch) == "arm64" ]]; then
     fi
 fi
 VERSION="10.9beta"
-VERSIONDATE="2025-07-14"
+VERSIONDATE="2025-07-16"
 
 # MARK: Functions
 
@@ -3640,8 +3640,9 @@ cursorai)
 cyberduck)
     name="Cyberduck"
     type="zip"
-    downloadURL=$(curl -fs https://version.cyberduck.io/changelog.rss | xpath '//rss/channel/item/enclosure/@url' 2>/dev/null | cut -d '"' -f 2 )
-    appNewVersion=$(curl -fs https://version.cyberduck.io/changelog.rss | xpath '//rss/channel/item/enclosure/@sparkle:shortVersionString' 2>/dev/null | cut -d '"' -f 2 )
+    changeLOG="$( curl -fs https://version.cyberduck.io/changelog.rss )"
+    downloadURL=$( echo "$changeLOG" | sed 's/sparkle://g' | xmllint --xpath 'string(//item/enclosure/@url)' - 2>/dev/null)
+    appNewVersion=$( echo "$changeLOG" | sed 's/sparkle://g' | xmllint --xpath 'string(//item/enclosure/@shortVersionString)' - 2>/dev/null)
     expectedTeamID="G69SCX94XU"
     ;;
 cycling74max)
@@ -9028,7 +9029,8 @@ snagit2023)
     appNewVersion=$(curl -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Safari/605.1.15" -fs "https://support.techsmith.com/hc/en-us/articles/360004908652-Desktop-Product-Download-Links"  | grep "Snagit (Mac) 2023" | sed -e 's/.*Snagit (Mac) //' -e 's/<\/td>.*//')
     expectedTeamID="7TQL462TU8"
     ;;
-snapgene|snapgeneviewer)
+snapgene|\
+snapgeneviewer)
     name="SnapGene"
     type="dmg"
     downloadURL="https://www.snapgene.com/local/targets/download.php?os=mac&majorRelease=latest&minorRelease=latest"
@@ -10245,7 +10247,8 @@ vmwarefusion)
     appNewVersion=$(curl -fsIL ${curlOptions} "https://www.vmware.com/go/getfusion" | grep -i "^location" | awk '{print $2}' | sed 's/.*-\(.*\)-.*/\1/')
     expectedTeamID="EG7KH642X6"
     ;;
-vmwarehorizonclient|omnissahorizonclient)
+vmwarehorizonclient|\
+omnissahorizonclient)
     name="Omnissa Horizon Client"
     type="pkgInDmg"
     jsonData=$(curl -fsL 'https://customerconnect.omnissa.com/channel/public/api/v1.0/products/getRelatedDLGList?locale=en_US&category=desktop_end_user_computing&product=omnissa_horizon_clients&version=8&dlgType=PRODUCT_BINARY')
@@ -10336,9 +10339,9 @@ webexteams)
     appNewVersion=$(curl -fs https://help.webex.com/en-us/article/8dmbcr/Webex-App-%7C-What%27s-New | tr '"' "\n" |  grep "Mac—"| head -1|sed 's/[^0-9\.]//g' )
     blockingProcesses=( "Webex" "Webex Teams" "Cisco WebEx Start" "WebexHelper")
     if [[ $(arch) == arm64 ]]; then
-        downloadURL="https://binaries.webex.com/WebexDesktop-MACOS-Apple-Silicon-Gold/Webex.dmg"
+        downloadURL="https://binaries.webex.com/webex-macos-apple-silicon/Webex.dmg"
     elif [[ $(arch) == i386 ]]; then
-        downloadURL="https://binaries.webex.com/WebexTeamsDesktop-MACOS-Gold/Webex.dmg"
+        downloadURL="https://binaries.webex.com/webex-macos-intel/Webex.dmg"
     fi
     expectedTeamID="DE8Y96K9QP"
     ;;
